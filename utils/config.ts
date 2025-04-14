@@ -1,1 +1,1 @@
-export const loginURL = import.meta.env.LOGIN_URL;
+export const loginURL = import.meta.env.VITE_LOGIN_URL;
