@@ -17,7 +17,9 @@ export async function clientAction({
     const data = jwtDecode(user.token);
     localStorage.setItem("loggedInUser", user.token);
     return redirect(
-      data.role === "TravelAgent" ? "/agent-dashboard" : "/customer-dashboard"
+      data.role === "TravelAgent"
+        ? `/agent-dashboard/${data.sub}`
+        : `/customer-dashboard/${data.sub}`
     );
   } catch (error) {
     return { error: "Wrong Credentials" };
