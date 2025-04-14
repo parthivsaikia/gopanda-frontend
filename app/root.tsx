@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetcher,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -41,8 +42,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Ensure consistent client/server rendering
+export const handle = {
+  // This ensures styles are consistently applied
+  hydrate: true,
+};
+
 export default function App() {
-  return <Outlet />;
+  const fetcher = useFetcher();
+  const error = fetcher.data?.error;
+
+  return (
+    <div>
+      <div className="absolute right-0">
+        <p>{error}</p>
+      </div>
+      <Outlet />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
