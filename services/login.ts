@@ -1,9 +1,9 @@
 import axios from "axios";
-const loginURL = "http";
+import { loginURL } from "utils/config";
 export const login = async (username: string, password: string) => {
   try {
     if (loginURL) {
-      const request = axios.post(`http://localhost:3005/login`, {
+      const request = axios.post(`${loginURL}/login`, {
         username,
         password,
       });
