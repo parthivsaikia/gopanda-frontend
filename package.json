@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-router/node": "^7.5.0",
     "@react-router/serve": "^7.5.0",
+    "arktype": "^2.1.19",
     "axios": "^1.8.4",
     "dotenv-cli": "^8.0.0",
     "isbot": "^5.1.17",
