@@ -1,9 +1,9 @@
 import { Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/login";
-import axios from "axios";
 import { login } from "services/login";
-import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import { redirectToDashboard } from "services/redirectToDashboard";
 
 export async function clientAction({
   params,
@@ -16,17 +16,24 @@ export async function clientAction({
     const user = await login(username, password);
     const data = jwtDecode(user.token);
     localStorage.setItem("loggedInUser", user.token);
-    return redirect(
-      data.role === "TravelAgent"
-        ? `/agent-dashboard/${data.sub}`
-        : `/customer-dashboard/${data.sub}`
-    );
+    return redirect(redirectToDashboard(data.role));
   } catch (error) {
     return { error: "Wrong Credentials" };
   }
 }
 
-export default function LoginPage({ actionData }: Route.ComponentProps) {
+export async function clientLoader() {
+  const token = localStorage.getItem("loggedInUser");
+  if (token) {
+    const data = jwtDecode(token);
+    return redirect(redirectToDashboard(data.role));
+  }
+}
+
+export default function LoginPage({
+  actionData,
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <div>
       <h1>Login to use gopandas.</h1>
