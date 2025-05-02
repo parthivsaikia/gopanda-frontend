@@ -3,13 +3,13 @@ import { baseURL } from "utils/config";
 export const login = async (username: string, password: string) => {
   try {
     if (baseURL) {
-      const request = axios.post(`${baseURL}/login`, {
+      const request = axios.post(`${baseURL}/auth/login`, {
         username,
         password,
       });
       const response = await request;
-      const user = response.data;
-      return user;
+      const receivedData = response.data;
+      return receivedData;
     }
   } catch (error) {
     const errorMessage =

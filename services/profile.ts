@@ -1,10 +1,11 @@
 import axios from "axios";
 import { baseURL } from "utils/config";
 
-export const getProfile = async (id: string, token: string) => {
+export const getCurrentUser = async () => {
   const config = {
-    headers: { Authorization: token },
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
   };
-  const response = await axios.get(`${baseURL}/profile/${id}`, config);
+  const response = await axios.get(`${baseURL}/user/current-user`, config);
   return response.data;
 };

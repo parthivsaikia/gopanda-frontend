@@ -54,9 +54,6 @@ export default function App() {
 
   return (
     <div>
-      <div className="absolute right-0">
-        <p>{error}</p>
-      </div>
       <Outlet />
     </div>
   );

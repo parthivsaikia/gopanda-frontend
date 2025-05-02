@@ -1,63 +1,51 @@
 import { Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/login";
+import { userLoginDTO } from "schema/user";
+import { type } from "arktype";
 import { login } from "services/login";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
-import { redirectToDashboard } from "services/redirectToDashboard";
 
-export async function clientAction({
-  params,
-  request,
-}: Route.ClientActionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   try {
     const formData = await request.formData();
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
-    const user = await login(username, password);
-    const data = jwtDecode(user.token);
-    localStorage.setItem("loggedInUser", user.token);
-    return redirect(redirectToDashboard(data.role));
+    const userInputData = userLoginDTO(Object.fromEntries(formData));
+    if (userInputData instanceof type.errors) {
+      return { error: userInputData.summary };
+    }
+    const userData = await login(
+      userInputData.username,
+      userInputData.password
+    );
+    return redirect(
+      userData.role === "Customer" ? "/customer-dashboard" : "/agent-dashboard"
+    );
   } catch (error) {
-    return { error: "Wrong Credentials" };
+    return { error: error };
   }
 }
 
-export async function clientLoader() {
-  const token = localStorage.getItem("loggedInUser");
-  if (token) {
-    const data = jwtDecode(token);
-    return redirect(redirectToDashboard(data.role));
-  }
-}
-
-export default function LoginPage({
-  actionData,
-  loaderData,
-}: Route.ComponentProps) {
+export default function LoginPage() {
   return (
     <div>
-      <h1>Login to use gopandas.</h1>
-      <p className="text-red-500">{actionData?.error}</p>
       <Form method="post">
         <div>
           <label htmlFor="username">Username</label>
           <input
             type="text"
-            placeholder="username"
-            id="username"
             name="username"
+            id="username"
+            placeholder="Username"
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Username</label>
           <input
             type="password"
-            placeholder="password"
             name="password"
             id="password"
+            placeholder="Password"
           />
         </div>
-        <button type="submit">Log in</button>
+        <button type="submit">Log In</button>
       </Form>
     </div>
   );

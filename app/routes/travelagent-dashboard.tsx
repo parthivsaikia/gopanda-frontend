@@ -1,19 +1,12 @@
-import { getProfile } from "services/profile";
+import { getCurrentUser } from "services/profile";
 import { Form } from "react-router";
 import type { Route } from "./+types/travelagent-dashboard";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   try {
-    const token = localStorage.getItem("loggedInUser");
-    if (token) {
-      const userData = jwtDecode(token);
-      const userId = userData.sub;
-      if (userId) {
-        const user = await getProfile(userId, token);
-        return user;
-      }
-    }
+    const user = await getCurrentUser();
   } catch (error) {
     console.log(error);
   }

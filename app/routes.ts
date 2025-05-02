@@ -12,4 +12,5 @@ export default [
   route("customer-dashboard/", "routes/customer-dashboard.tsx"),
   route("agent-dashboard/", "routes/travelagent-dashboard.tsx"),
   route("logout", "routes/logout.tsx"),
+  route("/create-tour", "routes/create-tour.tsx"),
 ] satisfies RouteConfig;

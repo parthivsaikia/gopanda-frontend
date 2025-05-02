@@ -20,16 +20,25 @@ export const signup = async ({
   role: string;
   email: string;
 }) => {
-  const response = await axios.post(`${baseURL}/users`, {
-    username,
-    password,
-    name,
-    mobileNumber,
-    state,
-    country,
-    role,
-    email,
-  });
-  const user = response.data;
-  return user;
+  const response = await axios.post(
+    `${baseURL}/auth/signup`,
+    {
+      username,
+      password,
+      name,
+      mobileNumber,
+      state,
+      country,
+      role,
+      email,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }
+  );
+  const userData = response.data;
+  return userData;
 };

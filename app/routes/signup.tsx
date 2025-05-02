@@ -19,7 +19,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         formData.get("password") as string
       );
 
-      localStorage.setItem("loggedInUser", loginData.token);
       return redirect(
         data.role === "Customer"
           ? `/customer-dashboard/${user.id}`
@@ -34,7 +33,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Signup({ actionData }: Route.ComponentProps) {
   return (
     <div>
-      <div className="text-red-500">{actionData?.error}</div>
+      <div className="text-red-500">{JSON.stringify(actionData?.error)}</div>
       <Form method="post">
         <div>
           <label htmlFor="name">Name</label>
